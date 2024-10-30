@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EdmxToFluentApi.Models;
+using EdmxToFluentApi.Processors;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace EdmxToFluentApi
@@ -7,19 +10,31 @@ namespace EdmxToFluentApi
     {
         static void Main(string[] args)
         {
-            var edmxInputPath = string.Empty;
+            var edmxFilePath = string.Empty;
             var fluentMappingOutputPath = string.Empty;
 
-            while (string.IsNullOrEmpty(edmxInputPath) || !File.Exists(edmxInputPath))
+            while (string.IsNullOrEmpty(edmxFilePath) || !File.Exists(edmxFilePath))
             {
-                Console.Write("EDMX input path: ");
-                edmxInputPath = Console.ReadLine();
+                Console.Write("EDMX file path: ");
+                edmxFilePath = Console.ReadLine();
             }
 
             while (string.IsNullOrEmpty(fluentMappingOutputPath) || !Directory.Exists(fluentMappingOutputPath))
             {
                 Console.Write("Fluent Mapping output path: ");
                 fluentMappingOutputPath = Console.ReadLine();
+            }
+
+            var context = new ProcessorContext()
+            {
+                EdmxFilePath = edmxFilePath,
+            };
+
+            var processors = new List<IProcessor>();
+
+            foreach (var processor in processors)
+            {
+                processor.Process(context);
             }
 
             Console.WriteLine("Press some key to exit >>>");
