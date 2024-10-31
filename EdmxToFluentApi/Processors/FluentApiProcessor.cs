@@ -11,9 +11,9 @@ namespace EdmxToFluentApi.Processors
             if (!Directory.Exists(context.OutputDirectory))
                 Directory.CreateDirectory(context.OutputDirectory);
 
-            GenerateFluentApiFiles(context.EdmxParseResult, context.OutputDirectory);
+            GenerateFluentApiFiles(context.EdmxParseResult, context);
         }
-        private void GenerateFluentApiFiles(EdmxParseResult parseResult, string outputDirectory)
+        private void GenerateFluentApiFiles(EdmxParseResult parseResult, ProcessorContext context)
         {
             // Get the name of the entity.
             // Retrieve common information about the entity.
@@ -29,7 +29,7 @@ namespace EdmxToFluentApi.Processors
                 var commonInfo = parseResult.CommonEntityInfos[entityName];
 
                 _builder.AddDefaultUsings()
-                    .AddNamespace()
+                    .AddNamespace(context.NamespaceName)
                     .StartEntityConfiguration(entityName)
                     .ToTable(commonInfo.Table, commonInfo.Schema)
                     .HasKey(commonInfo.PrimaryKeys.ToArray());
@@ -53,7 +53,7 @@ namespace EdmxToFluentApi.Processors
                 var generatedFileText = _builder.ToString();
                 _builder.Clear();
 
-                WriteGeneratedFile(entityName, outputDirectory, generatedFileText);
+                WriteGeneratedFile(entityName, context.OutputDirectory, generatedFileText);
             }
         }
         private void WriteGeneratedFile(string entityName, string outputDirectory, string generatedFileText)
