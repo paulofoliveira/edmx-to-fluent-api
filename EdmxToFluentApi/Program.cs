@@ -11,26 +11,27 @@ namespace EdmxToFluentApi
         static void Main(string[] args)
         {
             var edmxFilePath = string.Empty;
-            var fluentMappingOutputPath = string.Empty;
+            var outputDirectory = string.Empty;
 
             while (string.IsNullOrEmpty(edmxFilePath) || !File.Exists(edmxFilePath))
             {
-                Console.Write("EDMX file path: ");
+                Console.Write("EDMX File path: ");
                 edmxFilePath = Console.ReadLine();
             }
 
-            while (string.IsNullOrEmpty(fluentMappingOutputPath) || !Directory.Exists(fluentMappingOutputPath))
+            while (string.IsNullOrEmpty(outputDirectory) || !Directory.Exists(outputDirectory))
             {
-                Console.Write("Fluent Mapping output path: ");
-                fluentMappingOutputPath = Console.ReadLine();
+                Console.Write("Output Directory path: ");
+                outputDirectory = Console.ReadLine();
             }
 
             var context = new ProcessorContext()
             {
                 EdmxFilePath = edmxFilePath,
+                OutputDirectory = outputDirectory
             };
 
-            var processors = new List<IProcessor>();
+            var processors = new List<IProcessor>() { new EdmxFileProcessor(), new FluentApiProcessor() };
 
             foreach (var processor in processors)
             {
