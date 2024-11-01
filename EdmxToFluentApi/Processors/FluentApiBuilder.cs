@@ -72,9 +72,12 @@ namespace EdmxToFluentApi.Processors
         }
         public FluentApiBuilder AddProperty(TableColumnDescription description)
         {
-            _builder.Append($"{Indent(METHOD_INDENT + 1)}Property(e => e.{description.EntityName})")
-                .Append($".HasColumnName(\"{description.TableName}\")")
-                .Append($".HasColumnType(\"{description.SqlType}\")")
+            _builder.Append($"{Indent(METHOD_INDENT + 1)}Property(e => e.{description.EntityName})");
+
+            if (!description.EntityName.Equals(description.TableName))
+                _builder.Append($".HasColumnName(\"{description.TableName}\")");
+
+            _builder.Append($".HasColumnType(\"{description.SqlType}\")")
                 .Append(description.IsNullable ? ".IsOptional()" : ".IsRequired()")
                 .Append(description.IsFixedLength ?? false ? ".IsFixedLength()" : string.Empty)
                 .Append(description.MaxLength > 0 ? $".HasMaxLength({description.MaxLength})" : string.Empty);
