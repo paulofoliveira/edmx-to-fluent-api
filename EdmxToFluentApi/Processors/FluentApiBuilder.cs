@@ -39,11 +39,9 @@ namespace EdmxToFluentApi.Processors
             _builder.AppendLine($"namespace {name}").AppendLine("{");
             return this;
         }
-        public FluentApiBuilder StartEntityConfiguration(string entityName)
+        public FluentApiBuilder StartEntityConfiguration(string configurationClassName, string entityName)
         {
             // initialize class with constructor and inherit from EntityTypeConfiguration<T> class
-
-            var configurationClassName = $"{entityName}Configuration";
 
             _builder.AppendLine($"{Indent(CLASS_INDENT)}internal class {configurationClassName} : EntityTypeConfiguration<{entityName}>")
                 .AppendLine(Indent(CLASS_INDENT) + "{")

@@ -35,9 +35,11 @@ namespace EdmxToFluentApi.Processors
                 var entityName = entitySetMapping.EntitySet.ElementType.Name;
                 var commonInfo = parseResult.CommonEntityInfos[entityName];
 
+                var configurationClassName = $"{entityName}Configuration";
+
                 _builder.AddDefaultUsings()
                     .AddNamespace(context.NamespaceName)
-                    .StartEntityConfiguration(entityName)
+                    .StartEntityConfiguration(configurationClassName, entityName)
                     .ToTable(commonInfo.Table, commonInfo.Schema)
                     .HasKey(commonInfo.PrimaryKeys.ToArray());
 
@@ -60,12 +62,12 @@ namespace EdmxToFluentApi.Processors
                 var generatedFileText = _builder.ToString();
                 _builder.Clear();
 
-                WriteGeneratedFile(entityName, context.OutputDirectory, generatedFileText);
+                WriteGeneratedFile(configurationClassName, context.OutputDirectory, generatedFileText);
             }
         }
-        private void WriteGeneratedFile(string entityName, string outputDirectory, string generatedFileText)
+        private void WriteGeneratedFile(string configurationClassName, string outputDirectory, string generatedFileText)
         {
-            var filename = $"{entityName}Configuration.cs";
+            var filename = $"{configurationClassName}.cs";
             var path = Path.Combine(outputDirectory, filename);
             File.WriteAllText(path, generatedFileText);
         }
