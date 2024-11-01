@@ -10,6 +10,13 @@ namespace EdmxToFluentApi.Processors
         {
             if (!Directory.Exists(context.OutputDirectory))
                 Directory.CreateDirectory(context.OutputDirectory);
+            else
+            {
+                var files = Directory.GetFiles(context.OutputDirectory, "*.cs");
+
+                foreach (var file in files)
+                    File.Delete(file);
+            }
 
             GenerateFluentApiFiles(context.EdmxParseResult, context);
         }
