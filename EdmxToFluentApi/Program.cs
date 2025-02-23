@@ -28,11 +28,15 @@ namespace EdmxToFluentApi
             Console.Write("Namespace Name: ");
             var namespaceName = Console.ReadLine();
 
+            Console.Write("Assembly Path: ");
+            var assemblyPath = Console.ReadLine();
+
             var context = new ProcessorContext()
             {
                 EdmxFilePath = edmxFilePath,
                 OutputDirectory = outputDirectory,
-                NamespaceName = namespaceName
+                NamespaceName = namespaceName,
+                AssemblyPath = assemblyPath
             };
 
             var processors = new List<IProcessor>() { new EdmxFileProcessor(), new FluentApiProcessor() };
