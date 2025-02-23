@@ -72,6 +72,15 @@ namespace EdmxToFluentApi.Processors
             _builder.AppendLine();
             return this;
         }
+        public FluentApiBuilder AddIgnoreProperty(string propertyName)
+        {
+            if (propertyName == null)
+                throw new ArgumentNullException(nameof(propertyName));
+
+            _builder.Append($"{Indent(METHOD_INDENT + 1)}Ignore(e => e.{propertyName})");
+            _builder.AppendLine(";");
+            return this;
+        }
         public FluentApiBuilder AddProperty(TableColumnDescription description)
         {
             _builder.Append($"{Indent(METHOD_INDENT + 1)}Property(e => e.{description.EntityName})");
