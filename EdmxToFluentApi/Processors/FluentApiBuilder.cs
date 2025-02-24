@@ -30,13 +30,18 @@ namespace EdmxToFluentApi.Processors
         public FluentApiBuilder AddDefaultUsings()
         {
             var namespaces = string.Join(Environment.NewLine, _defaultNamespaces);
-            _builder.AppendLine(namespaces).AppendLine();
+            _builder.AppendLine(namespaces);
             return this;
         }
         public FluentApiBuilder AddNamespace(string namespaceName = null)
         {
             var name = string.IsNullOrEmpty(namespaceName) ? "Change.Namespace.Generated" : namespaceName;
             _builder.AppendLine($"namespace {name}").AppendLine("{");
+            return this;
+        }
+        public FluentApiBuilder AddUsingClassPath(string pathClass)
+        {
+            _builder.AppendLine($"using {pathClass};").AppendLine();
             return this;
         }
         public FluentApiBuilder StartEntityConfiguration(string configurationClassName, string entityName)
