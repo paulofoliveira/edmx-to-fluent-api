@@ -3,8 +3,10 @@ Migrating edmx to Fluent API syntax
 
 The idea here is that user input with:
 
-1. Source path of edmx file
-2. Output path to generate fluent mapping files for Entity Framework.
+1. Source Path of edmx file
+2. Output Path to generate fluent mapping files for Entity Framework
+3. Default Namespace (not required)
+4. Assembly Path for analyze readonly properties
 
 Console Application is based on [articles](https://anton-dambrouski.medium.com/how-to-migrate-from-entity-framework-edmx-files-to-fluent-api-syntax-part-1-1-2-f53e31fd0b57) by Anton Dambrouski. This is part 1, for example. Some modifications from original code was added as:
 
