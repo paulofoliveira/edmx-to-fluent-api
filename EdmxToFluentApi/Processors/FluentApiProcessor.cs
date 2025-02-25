@@ -47,7 +47,7 @@ namespace EdmxToFluentApi.Processors
 
             var entityType = _entitiesFromAssembly.FirstOrDefault(x => x.Name == entityName);
             return entityType != null ? entityType.GetProperties()
-                    .Where(p => p.CanRead && !p.CanWrite)
+                    .Where(p => p.CanRead && !p.CanWrite && p.Name != "Item")
                     .ToList() : [];
         }
         private void GenerateFluentApiFiles(EdmxParseResult parseResult, ProcessorContext context)
@@ -64,11 +64,13 @@ namespace EdmxToFluentApi.Processors
             foreach (var entitySetMapping in parseResult.EntitySetMappings)
             {
                 var entityName = entitySetMapping.EntitySet.ElementType.Name;
+                var pathClass = entitySetMapping.EntitySet.ElementType.NamespaceName;
                 var commonInfo = parseResult.CommonEntityInfos[entityName];
 
                 var configurationClassName = $"{entityName}Configuration";
 
                 _builder.AddDefaultUsings()
+                    .AddUsingClassPath(pathClass)
                     .AddNamespace(context.NamespaceName)
                     .StartEntityConfiguration(configurationClassName, entityName)
                     .ToTable(commonInfo.Table, commonInfo.Schema)
